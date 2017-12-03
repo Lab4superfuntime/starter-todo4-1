@@ -197,3 +197,18 @@ Release Date: 2017-11-19
 ### Updated
     - models/Tasks.php extended xml(NM)
     - core/My_Model.php added XML_Model to it(NM)
+
+## *Version 1.3.0*
+Release Date: 2017-12-2
+
+### Data
+    - deleted data files tasks.csv, tasks.xml (TE)
+
+### Models
+    - updated Tasks.php to make calls to backend instead of grabbing XML data (TE)
+
+### Config
+    - autoloaded the restful package and  (TE)
+
+### Packages
+    - installed restful package and support libraries
