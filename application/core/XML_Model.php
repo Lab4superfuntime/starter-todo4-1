@@ -46,22 +46,50 @@ Class XML_Model extends Memory_Model {
 
             $tasks = simplexml_load_file($this->_origin);
 
-            $this->_fields = array("id","task","priority","size","group","deadline","status","flag");
-            foreach($tasks->task as $task){
-                $record = new stdClass();
-                for ($i = 0; $i < count($this->_fields); $i ++ ){
-                    if($this->_fields[$i] === 'task'){
-                        $record->{$this->_fields[$i]} = (string)$task->name;
-                    }else{
-                        $record->{$this->_fields[$i]} = (string)$task->{$this->_fields[$i]};
+            $tmp = array();
+            $holdname = 'task';
+            foreach($tasks->children()->children() as $child){
+                if($child->getName() === 'name') {
 
-                    }
+
+                    array_push($tmp, 'task');
+                }else {
+
+
+                    array_push($tmp,(string)$child->getName());
+                }
+            }
+            $this->_fields = $tmp;
+
+
+            foreach($tasks->children() as $childtask){
+                $record = new stdClass();
+                $i = 0;
+                foreach($childtask->children() as $sechitask){
+                    $record->{$this->_fields[$i]} = (string)$sechitask;
+                    $i++;
                 }
                 $key = $record->{$this->_keyfield};
-
-                $this->_data[$key] = $record;
+                $this->_data{$key} = $record;
 
             }
+
+//            $this->_fields = array("id","task","priority","size","group","deadline","status","flag");
+//            foreach($tasks->task as $task){
+//                $record = new stdClass();
+//                for ($i = 0; $i < count($this->_fields); $i ++ ){
+//                    if($this->_fields[$i] === 'task'){
+//                        $record->{$this->_fields[$i]} = (string)$task->name;
+//                    }else{
+//                        $record->{$this->_fields[$i]} = (string)$task->{$this->_fields[$i]};
+//
+//                    }
+//                }
+//                $key = $record->{$this->_keyfield};
+//
+//                $this->_data[$key] = $record;
+//
+//            }
 
         }
         $this->reindex();
